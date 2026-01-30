@@ -64,15 +64,3 @@ En este proyecto usamos:
 ### 4. Manejo de Eventos
 Es la forma de responder a las acciones del usuario, como el evento "onClick" para agregar productos.
 
-### 5. Listas y Keys
-Usamos .map() para iterar listas. Cada elemento debe tener una propiedad única "key" (el ID) para optimizar el rendimiento.
-
----
-
-## Instrucciones para correr este proyecto
-
-1. Abre la terminal en la carpeta del proyecto.
-2. Instala las dependencias necesarias:
-   npm install
-3. Ejecuta el servidor de desarrollo:
-   npm run dev
