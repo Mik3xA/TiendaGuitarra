@@ -27,11 +27,48 @@ function App() {
   //setData(db);
   //}, []);
 console.log(data);
+  function removeFromCart(id) {
+    setCart(prevCart => prevCart.filter(guitar => guitar.id !== id))
+  }
+
+  function increaseQuantity(id) {
+    const updatedCart = cart.map(item => {
+      if(item.id === id && item.quantity < 5) { // MAX 5 items (opcional)
+        return {
+          ...item,
+          quantity: item.quantity + 1
+        }
+      }
+      return item
+    })
+    setCart(updatedCart)
+  }
+
+  function decreaseQuantity(id) {
+    const updatedCart = cart.map(item => {
+      if(item.id === id && item.quantity > 1) { // MIN 1 item
+        return {
+          ...item,
+          quantity: item.quantity - 1
+        }
+      }
+      return item
+    })
+    setCart(updatedCart)
+  }
+
+  function clearCart() {
+    setCart([])
+  }
 
   return (
     <div>
 
-      <Header cart={cart} />
+      <Header cart={cart}
+  removeFromCart={removeFromCart}
+  increaseQuantity={increaseQuantity}
+  decreaseQuantity={decreaseQuantity}
+  clearCart={clearCart} />
 
       <main className="container-xl mt-5">
         <h2 className="text-center">Nuestra Colección</h2>

@@ -1,32 +1,46 @@
-export default function Card({ guitar,cart,setCart }) {
-  const { name, price, image, description } = guitar;
-  
-  const handleClick = (item) => {
-    setCart([...cart, item]);
-  }
+export default function Card({ guitar, cart, setCart }) {
 
-  return (
-    <div className="col-md-6 col-lg-4 mb-4">
-      <div className="row align-items-center">
-        <div className="col-4">
-          <img
-            className="img-fluid"
-            src={`/img/${image}.jpg`}  
-            alt={`imagen guitarra ${name}`}
-          />
-        </div>
+    const { name, image, description, price } = guitar
 
-        <div className="col-8">
-          <h3 className="text-black fs-4 fw-bold text-uppercase">{name}</h3>
-          <p>{description}</p>
-          <p className="fw-black text-primary fs-3">${price}</p>
-          <button type="button" 
-          className="btn btn-dark w-100" 
-          onClick={() => handleClick(guitar)}>
-            Agregar al Carrito
-          </button>
+    const handleClick = (item) => {
+        const itemExists = cart.find(guitar => guitar.id === item.id)
+
+        if(itemExists) {
+            const updatedCart = cart.map(guitar => {
+                if(guitar.id === item.id) {
+                    return {
+                        ...guitar, 
+                        quantity: guitar.quantity + 1 
+                    }
+                }
+                return guitar
+            })
+            setCart(updatedCart)
+        } else {
+            // lo agregamos al carrito con quantity = 1
+            setCart([...cart, { ...item, quantity: 1 }])
+        }
+    }
+
+    return (
+        <div className="col-md-6 col-lg-4 my-4 row align-items-center">
+            <div className="col-4">
+                <img
+                    className="img-fluid"
+                    src={`/img/${image}.jpg`}
+                    alt={`imagen guitarra ${name}`}
+                />
+            </div>
+            <div className="col-8">
+                <h3 className="text-black fs-4 fw-bold text-uppercase">{name}</h3>
+                <p>{description}</p>
+                <p className="fw-black text-primary fs-3">${price}</p>
+                <button
+                    type="button"
+                    className="btn btn-dark w-100"
+                    onClick={() => handleClick(guitar)}
+                >Agregar al Carrito</button>
+            </div>
         </div>
-      </div>
-    </div>
-  )
+    )
 }
