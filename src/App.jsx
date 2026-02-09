@@ -5,35 +5,29 @@ import Card from './components/Card';
 import { useState, useEffect} from 'react';
 import { db } from './db/db.js';
 
-//modificar nombre y variable 
-
 function App() {
 
- // const [customer, setCustomer] = useState({});
- // const [total, setTotal] = useState(0);
- // const [products, setProducts] = useState([]);
-  //const [modal, setModal] = useState(false);
+  const initialCart = () => {
+    const localStorageCart = localStorage.getItem('cart')
+    return localStorageCart ? JSON.parse(localStorageCart) : []
+  }
 
-  //console.log(total);
-  //()=>setTotal(100);
-  //if(auth){
-   // const (modal, setModal)=useState(false);
- // }
+  const [data, setData] = useState(db);
+  const [cart, setCart] = useState(initialCart);
 
- const [data, setData] = useState(db);
- const [cart, setCart] = useState([]);
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cart))
+  }, [cart])
 
- //useEffect(() => {
-  //setData(db);
-  //}, []);
-console.log(data);
+  console.log(data);
+
   function removeFromCart(id) {
     setCart(prevCart => prevCart.filter(guitar => guitar.id !== id))
   }
 
   function increaseQuantity(id) {
     const updatedCart = cart.map(item => {
-      if(item.id === id && item.quantity < 5) { // MAX 5 items (opcional)
+      if(item.id === id && item.quantity < 5) { // MAX 5 items
         return {
           ...item,
           quantity: item.quantity + 1
@@ -46,7 +40,7 @@ console.log(data);
 
   function decreaseQuantity(id) {
     const updatedCart = cart.map(item => {
-      if(item.id === id && item.quantity > 1) { // MIN 1 item
+      if(item.id === id && item.quantity > 1) { 
         return {
           ...item,
           quantity: item.quantity - 1
@@ -63,12 +57,13 @@ console.log(data);
 
   return (
     <div>
-
-      <Header cart={cart}
-  removeFromCart={removeFromCart}
-  increaseQuantity={increaseQuantity}
-  decreaseQuantity={decreaseQuantity}
-  clearCart={clearCart} />
+      <Header 
+        cart={cart}
+        removeFromCart={removeFromCart}
+        increaseQuantity={increaseQuantity}
+        decreaseQuantity={decreaseQuantity}
+        clearCart={clearCart} 
+      />
 
       <main className="container-xl mt-5">
         <h2 className="text-center">Nuestra Colección</h2>
@@ -85,7 +80,6 @@ console.log(data);
       </main>
 
       <Footer></Footer>
-
     </div>
   )
 }
